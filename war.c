@@ -15,16 +15,34 @@
 // ============================================================================
 
 // Inclusão das bibliotecas padrão necessárias para entrada/saída, alocação de memória, manipulação de strings e tempo.
-
+#include <stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<time.h>
 // --- Constantes Globais ---
 // Definem valores fixos para o número de territórios, missões e tamanho máximo de strings, facilitando a manutenção.
-
+#define MAX_TERRITORIOS 5
+#define MAX_MISSOES 10
+#define MAX_STRING 100
+#define MAX_TROPAS 5
 // --- Estrutura de Dados ---
 // Define a estrutura para um território, contendo seu nome, a cor do exército que o domina e o número de tropas.
+struct territorios
+{
+    char nome[MAX_STRING];
+    char cor_exercito[MAX_STRING];
+    int tropas[MAX_TROPAS];
+};
 
 // --- Protótipos das Funções ---
 // Declarações antecipadas de todas as funções que serão usadas no programa, organizadas por categoria.
 // Funções de setup e gerenciamento de memória:
+void limpaBufferEntrada(){
+    int c;
+    while ((c=getchar())!='\n' && c != EOF);
+    
+    
+}
 // Funções de interface com o usuário:
 // Funções de lógica principal do jogo:
 // Função utilitária:
@@ -33,6 +51,70 @@
 // Função principal que orquestra o fluxo do jogo, chamando as outras funções em ordem.
 int main() {
     // 1. Configuração Inicial (Setup):
+    struct territorios territorio [MAX_TERRITORIOS];
+    int contTerritorios = 0;
+    int opcao;
+    {
+        do{
+            printf("..........__WAR__JOGO...............\n");
+            printf("OPÇÃO -1 : CADASTRAR TERRITÓRIO\n");
+            printf("OPÇÃO -2 : LISTAR TERRITÓRIOS\n");
+            printf("OPÇÃO -0 : SAIR\n");
+            printf("==================================\n");
+            printf("ESCOLHA UMA OPÇÃO :  \n");
+
+            scanf("%d", &opcao);
+            limpaBufferEntrada();
+
+            switch (opcao)
+            {
+            case 1:
+                printf("---Cadastrar Novo Território---\n\n");
+                if(contTerritorios<MAX_TERRITORIOS){
+                    printf("digite o nome do território: ");
+                    fgets(territorio[contTerritorios].nome,MAX_STRING,stdin);
+
+                    printf("digite acor do exercito :  ");
+                    fgets(territorio[contTerritorios].cor_exercito,MAX_STRING,stdin);
+
+                    territorio[contTerritorios].nome[strcspn(territorio[contTerritorios].nome,"\n")] = '\0';
+                    territorio[contTerritorios].cor_exercito[strcspn(territorio[contTerritorios].cor_exercito,"\n")] ='\0'; 
+
+
+                    printf("digite o número de tropas : ");
+                    scanf("%d",&territorio[contTerritorios].tropas);
+                    limpaBufferEntrada();
+
+                    contTerritorios++;
+                    printf("\n territóriocadastrado com sucesso!\n");
+                
+                }
+                else {
+                    printf("Número máximo de territórios já cadastrados");
+                }    
+               
+                break;
+            case 2:
+                printf("----LISTAR TERRITÓRIOS---\n");
+                //printf(territorio->nome);
+                //printf(territorio->cor_exercito);
+                
+                break;
+            
+            case 0:
+                printf("saindo");
+                
+                break;
+            }
+
+
+
+
+        } while (opcao != 0);
+        
+        
+    };
+    
     // - Define o locale para português.
     // - Inicializa a semente para geração de números aleatórios com base no tempo atual.
     // - Aloca a memória para o mapa do mundo e verifica se a alocação foi bem-sucedida.
