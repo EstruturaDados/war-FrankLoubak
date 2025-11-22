@@ -31,7 +31,7 @@ struct territorios
 {
     char nome[MAX_STRING];
     char cor_exercito[MAX_STRING];
-    int tropas[MAX_TROPAS];
+    int tropas;
 };
 
 // --- Protótipos das Funções ---
@@ -56,12 +56,12 @@ int main() {
     int opcao;
     {
         do{
-            printf("..........__WAR__JOGO...............\n");
+            printf(".........[  JOGO WAR  ].............\n\n");
             printf("OPÇÃO -1 : CADASTRAR TERRITÓRIO\n");
             printf("OPÇÃO -2 : LISTAR TERRITÓRIOS\n");
             printf("OPÇÃO -0 : SAIR\n");
             printf("==================================\n");
-            printf("ESCOLHA UMA OPÇÃO :  \n");
+            printf("ESCOLHA UMA OPÇÃO :  ");
 
             scanf("%d", &opcao);
             limpaBufferEntrada();
@@ -69,12 +69,12 @@ int main() {
             switch (opcao)
             {
             case 1:
-                printf("---Cadastrar Novo Território---\n\n");
+                printf("\n---Cadastrar Novo Território---\n\n");
                 if(contTerritorios<MAX_TERRITORIOS){
                     printf("digite o nome do território: ");
                     fgets(territorio[contTerritorios].nome,MAX_STRING,stdin);
 
-                    printf("digite acor do exercito :  ");
+                    printf("digite a cor do exercito :  ");
                     fgets(territorio[contTerritorios].cor_exercito,MAX_STRING,stdin);
 
                     territorio[contTerritorios].nome[strcspn(territorio[contTerritorios].nome,"\n")] = '\0';
@@ -95,11 +95,28 @@ int main() {
                
                 break;
             case 2:
-                printf("----LISTAR TERRITÓRIOS---\n");
-                //printf(territorio->nome);
-                //printf(territorio->cor_exercito);
+                printf("----LISTA DE TERRITÓRIOS CADASTRADOS---\n\n");
+
+                if(contTerritorios==0){
+                    printf("NEHUM TERRRITORIO FOI CADASTRADO AINDA\n");
+                    }else{
+                        for(int i =0; i < contTerritorios; i++){
+                            printf("------------------------\n");
+                            printf("TERRITORIO : %d\n",i+1);
+                            printf("NOME : %s\n",territorio[i].nome);
+                            printf("COR DO EXERCITO : %s\n",territorio[i].cor_exercito);
+                            printf("QUANTIDADE DE TROPAS : %d\n",territorio[i].tropas);
+                                                     
+                        }
+                        printf("------------------------\n");
+                    }
+
+                    printf("\nfim da lista pressione enter para continuar...");
+                    getchar();
+                    break;
+               
                 
-                break;
+                
             
             case 0:
                 printf("saindo");
