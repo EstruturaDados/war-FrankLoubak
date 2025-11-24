@@ -1,0 +1,104 @@
+
+// Inclusão das bibliotecas padrão necessárias para entrada/saída, alocação de memória, manipulação de strings e tempo.
+#include <stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<time.h>
+// --- Constantes Globais ---
+// Definem valores fixos para o número de territórios, missões e tamanho máximo de strings, facilitando a manutenção.
+#define MAX_TERRITORIOS 5
+#define MAX_MISSOES 10
+#define MAX_STRING 100
+#define MAX_TROPAS 5
+// --- Estrutura de Dados ---
+// Define a estrutura para um território, contendo seu nome, a cor do exército que o domina e o número de tropas.
+struct territorios
+{
+    char nome[MAX_STRING];
+    char cor_exercito[MAX_STRING];
+    int tropas;
+};
+// --- Função Principal (main) ---
+// Função principal que cadastra e lista os territórios e encerra o sistema .
+int main() {
+    // 1. Configuração Inicial (Setup):
+    struct territorios territorio [MAX_TERRITORIOS];
+    int contTerritorios = 0;
+    int opcao;
+    {
+        do{
+            printf(".........[  JOGO WAR  ].............\n\n");
+            printf("OPÇÃO -1 : CADASTRAR TERRITÓRIO\n");
+            printf("OPÇÃO -2 : LISTAR TERRITÓRIOS\n");
+            printf("OPÇÃO -0 : SAIR\n");
+            printf("==================================\n");
+            printf("ESCOLHA UMA OPÇÃO :  ");
+
+            scanf("%d", &opcao);
+            limpaBufferEntrada();
+
+            switch (opcao)
+            {
+            case 1:
+                printf("\n---Cadastrar Novo Território---\n\n");
+                if(contTerritorios<MAX_TERRITORIOS){
+                    printf("digite o nome do território: ");
+                    fgets(territorio[contTerritorios].nome,MAX_STRING,stdin);
+
+                    printf("digite a cor do exercito :  ");
+                    fgets(territorio[contTerritorios].cor_exercito,MAX_STRING,stdin);
+
+                    territorio[contTerritorios].nome[strcspn(territorio[contTerritorios].nome,"\n")] = '\0';
+                    territorio[contTerritorios].cor_exercito[strcspn(territorio[contTerritorios].cor_exercito,"\n")] ='\0'; 
+
+
+                    printf("digite o número de tropas : ");
+                    scanf("%d",&territorio[contTerritorios].tropas);
+                    limpaBufferEntrada();
+
+                    contTerritorios++;
+                    printf("\n territóriocadastrado com sucesso!\n");
+                
+                }
+                else {
+                    printf("Número máximo de territórios já cadastrados");
+                }    
+               
+                break;
+            case 2:
+                printf("----LISTA DE TERRITÓRIOS CADASTRADOS---\n\n");
+
+                if(contTerritorios==0){
+                    printf("NEHUM TERRRITORIO FOI CADASTRADO AINDA\n");
+                    }else{
+                        for(int i =0; i < contTerritorios; i++){
+                            printf("------------------------\n");
+                            printf("TERRITORIO : %d\n",i+1);
+                            printf("NOME : %s\n",territorio[i].nome);
+                            printf("COR DO EXERCITO : %s\n",territorio[i].cor_exercito);
+                            printf("QUANTIDADE DE TROPAS : %d\n",territorio[i].tropas);
+                                                     
+                        }
+                        printf("------------------------\n");
+                    }
+
+                    printf("\nfim da lista pressione enter para continuar...");
+                    getchar();
+                    break;
+               
+                
+                
+            
+            case 0:
+                printf("saindo");
+                
+                break;
+            }
+
+
+
+
+        } while (opcao != 0);
+        
+        
+    };
