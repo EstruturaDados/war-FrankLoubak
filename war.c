@@ -37,6 +37,7 @@ struct territorios
 // --- Protótipos das Funções ---
 // Declarações antecipadas de todas as funções que serão usadas no programa, organizadas por categoria.
 // Funções de setup e gerenciamento de memória:
+// função para limpar buffer
 void limpaBufferEntrada(){
     int c;
     while ((c=getchar())!='\n' && c != EOF);
@@ -50,7 +51,7 @@ void limpaBufferEntrada(){
 // --- Função Principal (main) ---
 // Função principal que orquestra o fluxo do jogo, chamando as outras funções em ordem.
 int main() {
-    // 1. Configuração Inicial (Setup):
+    // 1. Configuração Inicial, cadastra territórios, lista territórios cadastrados e encerra sistema  (Setup):
     struct territorios territorio [MAX_TERRITORIOS];
     int contTerritorios = 0;
     int opcao;
