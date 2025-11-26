@@ -46,6 +46,11 @@ void limpaBufferEntrada(){
 }
 // Funções de interface com o usuário:
 // Funções de lógica principal do jogo:
+void dado(){
+	int i;
+	srand(time(NULL));
+	i = rand() % 7;
+	printf("%d\n",i);}   
 // Função utilitária:
 
 // --- Função Principal (main) ---
@@ -58,8 +63,9 @@ int main() {
     {
         do{
             printf(".........[  JOGO WAR  ].............\n\n");
-            printf("OPÇÃO -1 : CADASTRAR TERRITÓRIO\n");
-            printf("OPÇÃO -2 : LISTAR TERRITÓRIOS\n");
+            printf("OPÇÃO - 1 : CADASTRAR TERRITÓRIO\n");
+            printf("OPÇÃO - 2 : LISTAR TERRITÓRIOS\n");
+            printf("OPÇAO - 3 : JOGAR DADOS\n");
             printf("OPÇÃO -0 : SAIR\n");
             printf("==================================\n");
             printf("ESCOLHA UMA OPÇÃO :  ");
@@ -82,9 +88,16 @@ int main() {
                     territorio[contTerritorios].cor_exercito[strcspn(territorio[contTerritorios].cor_exercito,"\n")] ='\0'; 
 
 
-                    printf("digite o número de tropas : ");
-                    scanf("%d",&territorio[contTerritorios].tropas);
-                    limpaBufferEntrada();
+                    do {
+                         printf("digite o número de tropas (1 a 5): ");
+                         scanf("%d", &territorio[contTerritorios].tropas);
+                         limpaBufferEntrada();
+
+                       if (territorio[contTerritorios].tropas <= 0 || territorio[contTerritorios].tropas > 5) {
+                       printf("Valor inválido! O número de tropas deve ser entre 1 e 5.\n");
+    }
+
+                        } while (territorio[contTerritorios].tropas <= 0 || territorio[contTerritorios].tropas > 5);
 
                     contTerritorios++;
                     printf("\n territóriocadastrado com sucesso!\n");
@@ -115,7 +128,9 @@ int main() {
                     printf("\nfim da lista pressione enter para continuar...");
                     getchar();
                     break;
-               
+
+               case 3:
+                 dado();
                 
                 
             
