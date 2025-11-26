@@ -25,6 +25,7 @@
 #define MAX_MISSOES 10
 #define MAX_STRING 100
 #define MAX_TROPAS 5
+        int contTerritorios = 0;
 // --- Estrutura de Dados ---
 // Define a estrutura para um território, contendo seu nome, a cor do exército que o domina e o número de tropas.
 struct territorios
@@ -45,38 +46,9 @@ void limpaBufferEntrada(){
     
 }
 // Funções de interface com o usuário:
-// Funções de lógica principal do jogo:
-void dado(){
-	int i;
-	srand(time(NULL));
-	i = rand() % 7;
-	printf("%d\n",i);}   
-// Função utilitária:
-
-// --- Função Principal (main) ---
-// Função principal que orquestra o fluxo do jogo, chamando as outras funções em ordem.
-int main() {
-    // 1. Configuração Inicial, cadastra territórios, lista territórios cadastrados e encerra sistema  (Setup):
+void cadastrarTerritorio (){
     struct territorios territorio [MAX_TERRITORIOS];
-    int contTerritorios = 0;
-    int opcao;
-    {
-        do{
-            printf(".........[  JOGO WAR  ].............\n\n");
-            printf("OPÇÃO - 1 : CADASTRAR TERRITÓRIO\n");
-            printf("OPÇÃO - 2 : LISTAR TERRITÓRIOS\n");
-            printf("OPÇAO - 3 : JOGAR DADOS\n");
-            printf("OPÇÃO -0 : SAIR\n");
-            printf("==================================\n");
-            printf("ESCOLHA UMA OPÇÃO :  ");
-
-            scanf("%d", &opcao);
-            limpaBufferEntrada();
-
-            switch (opcao)
-            {
-            case 1:
-                printf("\n---Cadastrar Novo Território---\n\n");
+    printf("\n---Cadastrar Novo Território---\n\n");
                 if(contTerritorios<MAX_TERRITORIOS){
                     printf("digite o nome do território: ");
                     fgets(territorio[contTerritorios].nome,MAX_STRING,stdin);
@@ -106,7 +78,43 @@ int main() {
                 else {
                     printf("Número máximo de territórios já cadastrados");
                 }    
-               
+
+
+
+}
+// Funções de lógica principal do jogo:
+void dado(){
+	int i;
+	srand(time(NULL));
+	i = rand() % 7;
+	printf("%d\n",i);}   
+// Função utilitária:
+
+// --- Função Principal (main) ---
+// Função principal que orquestra o fluxo do jogo, chamando as outras funções em ordem.
+int main() {
+    // 1. Configuração Inicial, cadastra territórios, lista territórios cadastrados e encerra sistema  (Setup):
+    //struct territorios territorio [MAX_TERRITORIOS];
+    //int contTerritorios = 0;
+    int opcao;
+    {
+        do{
+            printf(".........[  JOGO WAR  ].............\n\n");
+            printf("OPÇÃO - 1 : CADASTRAR TERRITÓRIO\n");
+            printf("OPÇÃO - 2 : LISTAR TERRITÓRIOS\n");
+            printf("OPÇAO - 3 : JOGAR DADOS\n");
+            printf("OPÇÃO -0 : SAIR\n");
+            printf("==================================\n");
+            printf("ESCOLHA UMA OPÇÃO :  ");
+
+            scanf("%d", &opcao);
+            limpaBufferEntrada();
+
+            switch (opcao)
+            {
+            case 1:
+                cadastrarTerritorio();
+                             
                 break;
             case 2:
                 printf("----LISTA DE TERRITÓRIOS CADASTRADOS---\n\n");
