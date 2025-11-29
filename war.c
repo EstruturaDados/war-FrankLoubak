@@ -35,6 +35,11 @@ struct territorios
     int tropas;
 };
 
+
+
+
+
+
 // --- Protótipos das Funções ---
 // Declarações antecipadas de todas as funções que serão usadas no programa, organizadas por categoria.
 // Funções de setup e gerenciamento de memória:
@@ -45,9 +50,12 @@ void limpaBufferEntrada(){
     
     
 }
+struct territorios *territorio;
 // Funções de interface com o usuário:
+
+
 void cadastrarTerritorio (){
-    struct territorios territorio [MAX_TERRITORIOS];
+    
     printf("\n---Cadastrar Novo Território---\n\n");
                 if(contTerritorios<MAX_TERRITORIOS){
                     printf("digite o nome do território: ");
@@ -82,12 +90,39 @@ void cadastrarTerritorio (){
 
 
 }
+void listarTerritorio(){
+    
+        
+     printf("----LISTA DE TERRITÓRIOS CADASTRADOS---\n\n");
+
+                if(contTerritorios==0){
+                    printf("NEHUM TERRRITORIO FOI CADASTRADO AINDA\n");
+                    }else{
+                        for(int i =0; i < contTerritorios; i++){
+                            printf("------------------------\n");
+                            printf("TERRITORIO : %d\n",i+1);
+                            printf("NOME : %s\n",territorio[i].nome);
+                            printf("COR DO EXERCITO : %s\n",territorio[i].cor_exercito);
+                            printf("QUANTIDADE DE TROPAS : %d\n",territorio[i].tropas);
+                                                     
+                        }
+                        printf("------------------------\n");
+                    }
+
+                    printf("\nfim da lista pressione enter para continuar...");
+                    getchar();
+
+}
+
 // Funções de lógica principal do jogo:
-void dado(){
-	int i;
+int dado(int d){
+	int d;
 	srand(time(NULL));
-	i = rand() % 7;
-	printf("%d\n",i);}   
+	d = rand() % 7;
+	printf("%d\n",d);
+return d;}   
+
+
 // Função utilitária:
 
 // --- Função Principal (main) ---
@@ -96,6 +131,8 @@ int main() {
     // 1. Configuração Inicial, cadastra territórios, lista territórios cadastrados e encerra sistema  (Setup):
     //struct territorios territorio [MAX_TERRITORIOS];
     //int contTerritorios = 0;
+    territorio = (struct territorios*)malloc(sizeof(struct territorios));
+
     int opcao;
     {
         do{
@@ -117,7 +154,8 @@ int main() {
                              
                 break;
             case 2:
-                printf("----LISTA DE TERRITÓRIOS CADASTRADOS---\n\n");
+                 listarTerritorio();
+                /*printf("----LISTA DE TERRITÓRIOS CADASTRADOS---\n\n");
 
                 if(contTerritorios==0){
                     printf("NEHUM TERRRITORIO FOI CADASTRADO AINDA\n");
@@ -135,10 +173,16 @@ int main() {
 
                     printf("\nfim da lista pressione enter para continuar...");
                     getchar();
+                    */
                     break;
 
                case 3:
-                 dado();
+                 int i;
+                 printf("digite o atacante : ");
+                 scanf("%d",i);
+                 //dado(i);
+                 
+                 break;
                 
                 
             
