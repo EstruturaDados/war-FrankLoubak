@@ -116,11 +116,14 @@ void listarTerritorio(){
 
 // Funções de lógica principal do jogo:
 int dado(int d){
-	int d;
+    int d;
+    int atacante;
+    printf("digite o atacante : ");
+    scanf("%d",atacante);
 	srand(time(NULL));
 	d = rand() % 7;
-	printf("%d\n",d);
-return d;}   
+	printf(" o atacante %d tirou  %d no jogo de dados\n",atacante,d);
+    return d;}   
 
 
 // Função utilitária:
@@ -132,6 +135,8 @@ int main() {
     //struct territorios territorio [MAX_TERRITORIOS];
     //int contTerritorios = 0;
     territorio = (struct territorios*)malloc(sizeof(struct territorios));
+    int t = 15;
+    dado(t);
 
     int opcao;
     {
@@ -177,9 +182,9 @@ int main() {
                     break;
 
                case 3:
-                 int i;
-                 printf("digite o atacante : ");
-                 scanf("%d",i);
+                 //int i;
+                 //printf("digite o atacante : ");
+                 //scanf("%d",i);
                  //dado(i);
                  
                  break;
