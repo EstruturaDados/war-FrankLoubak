@@ -115,15 +115,29 @@ void listarTerritorio(){
 }
 
 // Funções de lógica principal do jogo:
-int dado(int d){
-    int d;
+int dado(){
+    int a; 
+	int d;
     int atacante;
-    printf("digite o atacante : ");
-    scanf("%d",atacante);
+	int defensor;
+	
 	srand(time(NULL));
-	d = rand() % 7;
-	printf(" o atacante %d tirou  %d no jogo de dados\n",atacante,d);
-    return d;}   
+	
+    printf("digite o atacante : ");
+    scanf("%d",&atacante);
+    a = 1+rand() % 6;
+    
+    printf("digite o defensor : ");
+    scanf("%d",&defensor);	
+	d = 1+rand() % 6;
+	
+	printf(" o atacante %d tirou  %d no jogo de dados e o defensor :  %d  tirou %d\n",atacante,a,defensor,d);
+	if(a>d){
+	   printf("atacante venceu\n");
+	}else{
+	   printf("o defensor venveu\n");
+	};
+    return 0;}
 
 
 // Função utilitária:
@@ -136,7 +150,7 @@ int main() {
     //int contTerritorios = 0;
     territorio = (struct territorios*)malloc(sizeof(struct territorios));
     int t = 15;
-    dado(t);
+    
 
     int opcao;
     {
@@ -160,32 +174,12 @@ int main() {
                 break;
             case 2:
                  listarTerritorio();
-                /*printf("----LISTA DE TERRITÓRIOS CADASTRADOS---\n\n");
+                
+                break;
 
-                if(contTerritorios==0){
-                    printf("NEHUM TERRRITORIO FOI CADASTRADO AINDA\n");
-                    }else{
-                        for(int i =0; i < contTerritorios; i++){
-                            printf("------------------------\n");
-                            printf("TERRITORIO : %d\n",i+1);
-                            printf("NOME : %s\n",territorio[i].nome);
-                            printf("COR DO EXERCITO : %s\n",territorio[i].cor_exercito);
-                            printf("QUANTIDADE DE TROPAS : %d\n",territorio[i].tropas);
-                                                     
-                        }
-                        printf("------------------------\n");
-                    }
-
-                    printf("\nfim da lista pressione enter para continuar...");
-                    getchar();
-                    */
-                    break;
-
-               case 3:
-                 //int i;
-                 //printf("digite o atacante : ");
-                 //scanf("%d",i);
-                 //dado(i);
+            case 3:
+                 
+                 dado();
                  
                  break;
                 
