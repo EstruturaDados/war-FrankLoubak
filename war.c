@@ -26,6 +26,7 @@
 #define MAX_STRING 100
 #define MAX_TROPAS 5
         int contTerritorios = 0;
+        int terrCadastrados = 0;
         
 // --- Estrutura de Dados ---
 // Define a estrutura para um território, contendo seu nome, a cor do exército que o domina e o número de tropas.
@@ -56,10 +57,11 @@ void limpaBufferEntrada(){
 
 
 void cadastrarTerritorio (struct territorios *territorio )
-{
+{    
+   
     
     printf("\n---Cadastrar Novo Território---\n\n");
-                if(contTerritorios<MAX_TERRITORIOS){
+                if(contTerritorios<terrCadastrados){
                     printf("digite o nome do território: ");
                     fgets(territorio[contTerritorios].nome,MAX_STRING,stdin);
 
@@ -120,16 +122,21 @@ void listarTerritorio(struct territorios *territorio)
 // Funções de lógica principal do jogo:
 int ataque(struct territorios *terriTorio){
     int a,  d,  atacante,  defensor;
-	
-	
-	
-    printf("digite o atacante : ");
-    scanf("%d",&atacante);
-    
-    
-    printf("digite o defensor : ");
-    scanf("%d",&defensor);	
 
+	if(contTerritorios==0){
+        printf("nenhum território cadastrado ! \n");
+    }else{printf("digite o atacante : ");
+    scanf("%d",&atacante);
+    limpaBufferEntrada();
+    
+    do{
+      printf("digite o defensor : ");
+      scanf("%d",&defensor);
+      limpaBufferEntrada();	
+      if(defensor==atacante){
+        printf("Defensor deve ser diferente do atacante\n ");
+      }
+    }while(defensor==atacante);
     a = 1+rand() % 6;
 	d = 1+rand() % 6;
 
@@ -158,6 +165,11 @@ int ataque(struct territorios *terriTorio){
 	   printf("\no defensor venveu\n");
 	}else printf("empate");
     
+    
+
+    }
+	
+	
     return 0;
 }
 
@@ -166,12 +178,12 @@ int ataque(struct territorios *terriTorio){
 
 // --- Função Principal (main) ---
 // Função principal que orquestra o fluxo do jogo, chamando as outras funções em ordem.
+// 1. Configuração Inicial, cadastra territórios, lista territórios cadastrados e encerra sistema  (Setup):
 int main() {
-    // 1. Configuração Inicial, cadastra territórios, lista territórios cadastrados e encerra sistema  (Setup):
-    
+      
     
     struct territorios *territorio;
-    territorio = (struct territorios*)malloc(MAX_TERRITORIOS*sizeof(struct territorios));
+    //territorio = (struct territorios*)malloc(MAX_TERRITORIOS*sizeof(struct territorios));
    
     srand(time(NULL));
     
@@ -193,6 +205,19 @@ int main() {
             switch (opcao)
             {
             case 1:
+                   if(contTerritorios==0){
+                     do {
+                         printf("digite o número de territórios para cadastrar (1 a 5): ");
+                         scanf("%d", &terrCadastrados);
+                         limpaBufferEntrada();
+
+                            if (terrCadastrados <= 0 || terrCadastrados > 5) {
+                              printf("Valor inválido! O número de tropas deve ser entre 1 e 5.\n");
+                            } 
+
+                        } while (terrCadastrados <= 0 || terrCadastrados > 5);   
+                        territorio = (struct territorios*)malloc(terrCadastrados*sizeof(struct territorios));
+                    }
                 cadastrarTerritorio(territorio);
                              
                 break;
