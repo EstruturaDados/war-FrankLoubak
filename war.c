@@ -46,6 +46,12 @@ struct territorios
 // Declarações antecipadas de todas as funções que serão usadas no programa, organizadas por categoria.
 // Funções de setup e gerenciamento de memória:
 // função para limpar buffer
+
+void liberarMemoria(struct territorios *territorio){
+    free(territorio);
+
+}
+
 void limpaBufferEntrada(){
     int c;
     while ((c=getchar())!='\n' && c != EOF);
@@ -123,14 +129,12 @@ void listarTerritorio(struct territorios *territorio)
 int ataque(struct territorios *terriTorio){
     int a,  d,  atacante,  defensor;
 
-	if(contTerritorios==0){
-        printf("nenhum território cadastrado ! \n");
-    }else{printf("digite o atacante : ");
+	printf("digite o número do  atacante : ");
     scanf("%d",&atacante);
     limpaBufferEntrada();
     
     do{
-      printf("digite o defensor : ");
+      printf("digite o número do defensor : ");
       scanf("%d",&defensor);
       limpaBufferEntrada();	
       if(defensor==atacante){
@@ -162,12 +166,11 @@ int ataque(struct territorios *terriTorio){
        strcpy(terriTorio[atacante-1].cor_exercito,
               terriTorio[defensor-1].cor_exercito);
        }
-	   printf("\no defensor venveu\n");
+	   printf("\no defensor venceu\n");
 	}else printf("empate");
     
     
 
-    }
 	
 	
     return 0;
@@ -227,10 +230,14 @@ int main() {
                 break;
 
             case 3:
-                 
-                 ataque(territorio);
-                 printf("\n------novo mapa com tropas atualizadas----\n");
-                 listarTerritorio(territorio);
+                 if(contTerritorios>0){
+                     ataque(territorio);
+                     printf("\n------novo mapa com tropas atualizadas----\n");
+                     listarTerritorio(territorio);
+                    } else {
+                        printf("nehum território cadastrado ainda !\n");
+                    }
+                
                  break;
                 
                 
@@ -246,7 +253,7 @@ int main() {
 
         } while (opcao != 0);
 
-        free(territorio);
+        liberarMemoria(territorio);
         
     };
     
