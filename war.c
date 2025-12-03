@@ -103,22 +103,22 @@ void listarTerritorio(struct territorios *territorio)
                     }else{
                         for(int i =0; i < contTerritorios; i++){
                             printf("------------------------\n");
-                            printf("TERRITORIO : %d\n",i+1);
-                            printf("NOME : %s\n",territorio[i].nome);
-                            printf("COR DO EXERCITO : %s\n",territorio[i].cor_exercito);
-                            printf("QUANTIDADE DE TROPAS : %d\n",territorio[i].tropas);
-                                                     
+                            printf("TERRITORIO : %d - ( %s , exercito %s, tropas %d)\n",
+                                i+1,territorio[i].nome,
+                                territorio[i].cor_exercito,
+                                territorio[i].tropas);
+                                                                               
                         }
                         printf("------------------------\n");
                     }
 
-                    printf("\nfim da lista pressione enter para continuar...");
+                    printf("\nfim da lista pressione enter para continuar...\n\n");
                     getchar();
 
 }
 
 // Funções de lógica principal do jogo:
-int dado(struct territorios *terriTorio){
+int ataque(struct territorios *terriTorio){
     int a,  d,  atacante,  defensor;
 	
 	
@@ -135,6 +135,7 @@ int dado(struct territorios *terriTorio){
 
     int *pttropasAt=&terriTorio[atacante-1].tropas;
     int *pttropasDF=&terriTorio[defensor-1].tropas;
+   
 
 
 	
@@ -143,9 +144,17 @@ int dado(struct territorios *terriTorio){
 	   printf("\natacante venceu\n");
        (*pttropasAt)++;
        (*pttropasDF)--;
+       if(*pttropasDF==0){
+        strcpy(terriTorio[defensor-1].cor_exercito,
+               terriTorio[atacante-1].cor_exercito);
+       }
 	}else if(a<d){
        (*pttropasAt)--;
        (*pttropasDF)++;
+       if(*pttropasAt==0){
+       strcpy(terriTorio[atacante-1].cor_exercito,
+              terriTorio[defensor-1].cor_exercito);
+       }
 	   printf("\no defensor venveu\n");
 	}else printf("empate");
     
@@ -173,8 +182,8 @@ int main() {
             printf("\n.........[  JOGO WAR  ].............\n\n");
             printf("OPÇÃO - 1 : CADASTRAR TERRITÓRIO\n");
             printf("OPÇÃO - 2 : LISTAR TERRITÓRIOS\n");
-            printf("OPÇAO - 3 : JOGAR DADOS\n");
-            printf("OPÇÃO -0 : SAIR\n");
+            printf("OPÇAO - 3 : ATACAR TERRITÓRIO\n");
+            printf("OPÇÃO - 0 : SAIR\n");
             printf("==================================\n");
             printf("ESCOLHA UMA OPÇÃO :  ");
 
@@ -194,8 +203,8 @@ int main() {
 
             case 3:
                  
-                 dado(territorio);
-                 printf("\n\nnovo mapa com tropas atualizadas\n\n");
+                 ataque(territorio);
+                 printf("\n------novo mapa com tropas atualizadas----\n");
                  listarTerritorio(territorio);
                  break;
                 
@@ -211,7 +220,8 @@ int main() {
 
 
         } while (opcao != 0);
-        
+
+        free(territorio);
         
     };
     
