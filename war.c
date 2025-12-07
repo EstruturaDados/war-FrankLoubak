@@ -25,9 +25,11 @@
 #define MAX_MISSOES 10
 #define MAX_STRING 100
 #define MAX_TROPAS 5
+#define MAX_BATALHAS 3
+
         int contTerritorios = 0;
         int terrCadastrados = 0;
-        int contMissao      = 0;
+        int contBatalha     = 0;
         
 // --- Estrutura de Dados ---
 // Define a estrutura para um território, contendo seu nome, a cor do exército que o domina e o número de tropas.
@@ -37,6 +39,13 @@ struct territorios
     char cor_exercito[MAX_STRING];
     int tropas;
 };
+
+struct missao
+{
+    char nome[MAX_STRING];
+    int idMissao;
+};
+
 
 
 
@@ -50,6 +59,7 @@ void liberarMemoria(struct territorios *territorio);
 void cadastrarTerritorio (struct territorios *territorio );
 void listarTerritorio(struct territorios *territorio);
 void ataque(struct territorios *terriTorio);
+void sortearMissao(struct missao *missao);
 
 // Funções de setup e gerenciamento de memória:
 // função para limpar buffer
@@ -77,18 +87,16 @@ int main() {
       
     
     struct territorios *territorio;
-    //territorio = (struct territorios*)malloc(MAX_TERRITORIOS*sizeof(struct territorios));
-   
-    srand(time(NULL));
-    
-
+    struct missao *missao;
     int opcao;
+    srand(time(NULL));
     {
         do{
             printf("\n.........[  JOGO WAR  ].............\n\n");
             printf("OPÇÃO - 1 : CADASTRAR TERRITÓRIO\n");
             printf("OPÇÃO - 2 : LISTAR TERRITÓRIOS\n");
             printf("OPÇAO - 3 : ATACAR TERRITÓRIO\n");
+            printf("OPÇÃO - 4 : SORTEAR MISSÃO\n");
             printf("OPÇÃO - 0 : SAIR\n");
             printf("==================================\n");
             printf("ESCOLHA UMA OPÇÃO :  ");
@@ -106,7 +114,7 @@ int main() {
                          limpaBufferEntrada();
 
                             if (terrCadastrados <= 0 || terrCadastrados > 5) {
-                              printf("Valor inválido! O número de tropas deve ser entre 1 e 5.\n");
+                              printf("Valor inválido! O número de territórios  deve ser entre 1 e 5.\n");
                             } 
 
                         } while (terrCadastrados <= 0 || terrCadastrados > 5);   
@@ -130,7 +138,10 @@ int main() {
                     }
                 
                  break;
-                
+
+            case 4:
+                sortearMissao(missao);
+                 break;    
                 
             
             case 0:
@@ -259,39 +270,43 @@ void listarTerritorio(struct territorios *territorio)
 
 // faseDeAtaque():
 void ataque(struct territorios *terriTorio){
-    int a,  d,  atacante,  defensor;
+    int a,  d,  atacante,  defensor,sair;
 
-	printf("digite o número do  atacante : ");
-    scanf("%d",&atacante);
-    limpaBufferEntrada();
+	
     
-    do{
-      printf("digite o número do defensor : ");
-      scanf("%d",&defensor);
-      limpaBufferEntrada();	
-      if(defensor==atacante){
-        printf("Defensor deve ser diferente do atacante\n ");
-      }
-    }while(defensor==atacante);
-    a = 1+rand() % 6;
-	d = 1+rand() % 6;
+   
 
-    int *pttropasAt=&terriTorio[atacante-1].tropas;
-    int *pttropasDF=&terriTorio[defensor-1].tropas;
+     do
+     {
+         do{printf("digite o número do  atacante : ");
+            scanf("%d",&atacante);
+            limpaBufferEntrada();
+            printf("digite o número do defensor : ");
+            scanf("%d",&defensor);
+            limpaBufferEntrada();	
+            if(defensor==atacante){
+            printf("Defensor deve ser diferente do atacante\n ");
+            }
+           }while(defensor==atacante);
+            a = 1+rand() % 6;
+	        d = 1+rand() % 6;
+
+             int *pttropasAt=&terriTorio[atacante-1].tropas;
+             int *pttropasDF=&terriTorio[defensor-1].tropas;
    
 
 
 	
-	printf(" o atacante %d  %s : tirou  %d | o defensor  %d %s : tirou %d\n",atacante,terriTorio[atacante-1].nome,a,defensor,terriTorio[defensor-1].nome,d);
-	if(a>d){
-	   printf("\natacante venceu\n");
-       (*pttropasAt)++;
-       (*pttropasDF)--;
-       if(*pttropasDF==0){
-        strcpy(terriTorio[defensor-1].cor_exercito,
-               terriTorio[atacante-1].cor_exercito);
+	         printf(" o atacante %d  %s : tirou  %d | o defensor  %d %s : tirou %d\n",atacante,terriTorio[atacante-1].nome,a,defensor,terriTorio[defensor-1].nome,d);
+	         if(a>d){
+	         printf("\natacante venceu\n");
+              (*pttropasAt)++;
+              (*pttropasDF)--;
+             if(*pttropasDF==0){
+             strcpy(terriTorio[defensor-1].cor_exercito,
+                    terriTorio[atacante-1].cor_exercito);
        }
-	}else if(a<d){
+	  }else if(a<d){
        (*pttropasAt)--;
        (*pttropasDF)++;
        if(*pttropasAt==0){
@@ -299,8 +314,17 @@ void ataque(struct territorios *terriTorio){
               terriTorio[defensor-1].cor_exercito);
        }
 	   printf("\no defensor venceu\n");
-	}else printf("empate"); 
-    
+	  }else printf("empate\n"); 
+      contBatalha++;
+      printf("voce já executou %d batalhas restam %d\n",contBatalha,MAX_BATALHAS-contBatalha);
+      printf("sair do jogo ?(1-sim , 2- Não) :");
+      scanf("%d",&sair);
+      //printf("\npressione enter para continuar...\n\n");
+      //getchar();
+     } while (contBatalha < MAX_BATALHAS && sair==2);
+     printf("Número máximo de batalhas executadas! missão não cumprida");
+     
+   
 
 }
 // Gerencia a interface para a ação de ataque, solicitando ao jogador os territórios de origem e destino.
@@ -313,6 +337,20 @@ void ataque(struct territorios *terriTorio){
 
 // sortearMissao():
 // Sorteia e retorna um ID de missão aleatório para o jogador.
+void sortearMissao(struct missao *missao) {
+    missao[0].idMissao = 1;
+    strcpy(missao[0].nome, "derrotar exercito 1");
+
+    missao[1].idMissao = 2;
+    strcpy(missao[1].nome, "derrotar exercito 2");
+
+    int M = 1 + rand() % 2;
+    printf("missão %d - %s\n", M, missao[M-1].nome);
+    printf("\nmissão sorteada pressione enter para continuar...\n\n");
+    getchar();
+
+}
+
 
 // verificarVitoria():
 // Verifica se o jogador cumpriu os requisitos de sua missão atual.
