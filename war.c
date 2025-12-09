@@ -55,7 +55,7 @@ struct missao
 // --- Protótipos das Funções ---
 // Declarações antecipadas de todas as funções que serão usadas no programa, organizadas por categoria.
 void limpaBufferEntrada();
-void liberarMemoria(struct territorios *territorio);
+void liberarMemoria(struct territorios **territorio);
 void cadastrarTerritorio (struct territorios *territorio );
 void listarTerritorio(struct territorios *territorio);
 void ataque(struct territorios *terriTorio);
@@ -86,8 +86,8 @@ void sortearMissao(struct missao *missao);
 int main() {
       
     
-    struct territorios *territorio;
-    struct missao *missao;
+    struct territorios *territorio=NULL;
+    struct missao *missao=NULL;
     int opcao;
     srand(time(NULL));
     {
@@ -119,8 +119,15 @@ int main() {
 
                         } while (terrCadastrados <= 0 || terrCadastrados > 5);   
                         territorio = (struct territorios*)malloc(terrCadastrados*sizeof(struct territorios));
+                        if (territorio == NULL) {
+                            printf("Erro ao alocar memória!\n");
+                            exit(1);
+                        }
                     }
-                cadastrarTerritorio(territorio);
+                    if(territorio !=NULL){
+                        cadastrarTerritorio(territorio);
+                    }
+                
                              
                 break;
             case 2:
@@ -140,6 +147,7 @@ int main() {
                  break;
 
             case 4:
+                missao = (struct missao*)malloc(5*sizeof(struct missao));
                 sortearMissao(missao);
                  break;    
                 
@@ -155,7 +163,11 @@ int main() {
 
         } while (opcao != 0);
 
-        liberarMemoria(territorio);
+        if (territorio != NULL){
+           liberarMemoria(&territorio);
+        }
+
+        
         
     };
     
@@ -190,7 +202,12 @@ int main() {
 // Preenche os dados iniciais de cada território no mapa (nome, cor do exército, número de tropas).
 // Esta função modifica o mapa passado por referência (ponteiro).
 void cadastrarTerritorio (struct territorios *territorio )
-{    
+{   
+    if(contTerritorios >= terrCadastrados){
+    printf("Limite de territórios atingido!\n");
+    return;
+}
+
        
     printf("\n---Cadastrar Novo Território---\n\n");
                 if(contTerritorios<terrCadastrados){
@@ -229,9 +246,13 @@ void cadastrarTerritorio (struct territorios *territorio )
 
 // liberarMemoria():
 // Libera a memória previamente alocada para o mapa usando free.
-void liberarMemoria(struct territorios *territorio){
-    free(territorio);
+void liberarMemoria(struct territorios **territorio){
+    if(*territorio != NULL){
+        free(*territorio);
+        *territorio = NULL;
+    }
 }
+
 
 // exibirMenuPrincipal():
 // Imprime na tela o menu de ações disponíveis para o jogador.
