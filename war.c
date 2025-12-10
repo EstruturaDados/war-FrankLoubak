@@ -59,7 +59,8 @@ void liberarMemoria(struct territorios **territorio);
 void cadastrarTerritorio (struct territorios *territorio );
 void listarTerritorio(struct territorios *territorio);
 void ataque(struct territorios *terriTorio);
-void sortearMissao(struct missao *missao);
+void sortearMissao(struct missao *missao, int *pm,struct territorios *territorio);
+void verificarmissao(struct territorios *territorio, int *pm, struct territorios *terrEstadoIni);
 
 // Funções de setup e gerenciamento de memória:
 // função para limpar buffer
@@ -89,6 +90,7 @@ int main() {
     struct territorios *territorio=NULL;
     struct missao *missao=NULL;
     int opcao = -1;
+    struct territorios terrEstadoIni[5];
     srand(time(NULL));
     {
         do{
@@ -126,7 +128,13 @@ int main() {
                     }
                     if(territorio !=NULL){
                         cadastrarTerritorio(territorio);
+                        memcpy(terrEstadoIni,territorio,sizeof(struct territorios) * contTerritorios);
+                        
                     }
+                    
+                    
+                    
+                   
                 
                              
                 break;
@@ -150,8 +158,10 @@ int main() {
                  break;
 
             case 4:
+                int m;
                 missao = (struct missao*)malloc(5*sizeof(struct missao));
-                sortearMissao(missao);
+                sortearMissao(missao, &m,territorio);
+                verificarmissao(territorio,&m,terrEstadoIni);
                 free(missao);
                 missao = NULL;
 
@@ -170,6 +180,7 @@ int main() {
         } while (opcao != 0);
 
         if (territorio != NULL){
+
            liberarMemoria(&territorio);
         }
 
@@ -404,17 +415,73 @@ void ataque(struct territorios *terriTorio){
 
 // sortearMissao():
 // Sorteia e retorna um ID de missão aleatório para o jogador.
-void sortearMissao(struct missao *missao) {
+void sortearMissao(struct missao *missao, int *pm,struct territorios *territorio) {
+    if(contTerritorios!=0){
     missao[0].idMissao = 1;
-    strcpy(missao[0].nome, "derrotar exercito 1");
+    strcpy(missao[0].nome, "\nderrotar exercito 1");
 
     missao[1].idMissao = 2;
-    strcpy(missao[1].nome, "derrotar exercito 2");
+    strcpy(missao[1].nome, "\nderrotar exercito 2");
 
-    int M = 1 + rand() % 2;
-    printf("missão %d - %s\n", M, missao[M-1].nome);
+     missao[2].idMissao = 2;
+    strcpy(missao[2].nome, "\nderrotar exército 3");
+
+     missao[3].idMissao = 2;
+    strcpy(missao[3].nome, "\nderrotar  exercito 4");
+
+     missao[4].idMissao = 2;
+    strcpy(missao[4].nome, "\nderrotar  exercito 5");
+
+     
+    *pm = 1 + rand() % contTerritorios;
+    
+    printf("missão %d - %s\n", *pm, missao[*pm-1].nome);
     printf("\nmissão sorteada pressione enter para continuar...\n\n");
-    getchar();
+    printf("territorio selecionado %s",territorio[(*pm)-1].nome);
+
+    getchar();} 
+    else{
+         printf("sem territórios cadastrados");
+        }
+
+}
+void verificarmissao(struct territorios *territorio, int *pm, struct territorios *terrEstadoIni)
+
+{
+      
+    if (contTerritorios!=0){
+
+    printf("conteúdo do ponteiro : %d ",*pm);
+
+  switch (*pm)
+  {
+  case 1:
+    
+    printf(" testar %s - tropas  %d",territorio[*pm-1].nome,territorio[*pm-1].tropas);
+    break;
+
+  case 2:
+   printf(" testar %s - tropas  %d",territorio[*pm-1].nome,territorio[*pm-1].tropas);
+    break;
+
+  case 3:
+    printf(" testar %s - tropas  %d",territorio[*pm-1].nome,territorio[*pm-1].tropas);
+    break;
+  
+    case 4:
+   printf(" testar %s - tropas  %d",territorio[*pm-1].nome,territorio[*pm-1].tropas);
+
+    case 5:
+   printf(" testar %s - tropas  %d",territorio[*pm-1].nome,territorio[*pm-1].tropas);
+    break;
+
+  default:
+    break;
+   }
+  }else {
+    
+    printf("sem territorios cadastrados ");}
+    
 
 }
 
