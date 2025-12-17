@@ -40,7 +40,7 @@ void liberarMemoria(struct territorios **territorio);
 void cadastrarTerritorio (struct territorios *territorio );
 void listarTerritorio(struct territorios *territorio);
 void ataque(struct territorios *terriTorio);
-void sortearMissao(struct missao *missao, int idmissao,struct territorios *territorio);
+void sortearMissao(struct missao *missao, int *missaoId,struct territorios *territorio);
 void verificarmissao(struct territorios *territorio, int missaoId, struct territorios *terrEstadoIni);
 
 
@@ -119,10 +119,10 @@ int main() {
                  break;
 
             case 4:
-                int m;
+                
                 missao = (struct missao*)malloc(5*sizeof(struct missao));
-                sortearMissao(missao, m,territorio);
-                verificarmissao(territorio,m,terrEstadoIni);
+                sortearMissao(missao, &missaoId,territorio);
+                verificarmissao(territorio,missaoId,terrEstadoIni);
                 free(missao);
                 missao = NULL;
 
@@ -341,7 +341,7 @@ void ataque(struct territorios *terriTorio){
 
 // sortearMissao():
 // Sorteia e retorna um ID de missão aleatório para o jogador.
-void sortearMissao(struct missao *missao, int missaoId,struct territorios *territorio) {
+void sortearMissao(struct missao *missao, int *missaoId,struct territorios *territorio) {
     if(contTerritorios!=0){
     missao[0].idMissao = 1;
     strcpy(missao[0].nome, "\nderrotar exercito 1");
@@ -359,11 +359,11 @@ void sortearMissao(struct missao *missao, int missaoId,struct territorios *terri
     strcpy(missao[4].nome, "\nderrotar  exercito 5");
 
      
-    missaoId = 1 + rand() % contTerritorios;
+    *missaoId = 1 + rand() % contTerritorios;
     
-    printf("missão %d - %s\n", missaoId, missao[missaoId-1].nome);
+    printf("missão %d - %s\n", *missaoId, missao[*missaoId-1].nome);
     printf("\nmissão sorteada pressione enter para continuar...\n\n");
-    printf("territorio selecionado %s",territorio[missaoId-1].nome);
+    printf("territorio selecionado %s",territorio[*missaoId-1].nome);
 
     getchar();} 
     else{
@@ -377,49 +377,40 @@ void verificarmissao(struct territorios *territorio, int missaoId, struct territ
       
     if (contTerritorios!=0){
 
-    printf("conteúdo de missaoId  : %d ",missaoId);
+        printf("conteúdo de missaoId  : %d ",missaoId);
 
-    for(int i =0; i <contTerritorios;i++){
-        if(terrEstadoIni[i].tropas != territorio[i].tropas){
-            printf("\nhouve alteração nas tropas do exercito %s\n",territorio[i].nome);
-        }
-    }
-   
-  /* switch (*pm)
+        for(int i =0; i <contTerritorios;i++){
+            if(terrEstadoIni[i].tropas != territorio[i].tropas){
+                printf("\nhouve alteração nas tropas do exercito %s\n",territorio[i].nome);
+            }
+        }  
   
-  {
-  case 1:
+    }
+     switch (missaoId)
+     {
+     case 1:
+        printf("missão %s verificando território",territorio[missaoId-1].nome);
+        break;
     
-    printf(" testar %s - tropas  %d",territorio[*pm-1].nome,territorio[*pm-1].tropas);
-    if(territorio[*pm-1].tropas != terrEstadoIni[*pm-1].tropas){
-        printf("houve mudança na tropa do exercito %s", territorio[*pm-1].nome);
-    }
-    break;
+    case 2:
+         printf("\nmissão %s verificando território\n",territorio[missaoId-1].nome);
+        break;
 
-  case 2:
-   printf(" testar %s - tropas  %d",territorio[*pm-1].nome,territorio[*pm-1].tropas);
-    break;
-
-  case 3:
-    printf(" testar %s - tropas  %d",territorio[*pm-1].nome,territorio[*pm-1].tropas);
-    break;
-  
+    case 3:
+        printf("\nmissão %s verificando território\n",territorio[missaoId-1].nome);
+        break;
+    
     case 4:
-   printf(" testar %s - tropas  %d",territorio[*pm-1].nome,territorio[*pm-1].tropas);
-
+         printf("\nmissão %s verificando território\n",territorio[missaoId-1].nome);
+        break; 
+        
     case 5:
-   printf(" testar %s - tropas  %d",territorio[*pm-1].nome,territorio[*pm-1].tropas);
-    break;
-
-  default:
-    break;
-   }
-  }else {
-    
-    printf("sem territorios cadastrados ");} */
-    
-
-}
+         printf("\nmissão %s verificando território\n",territorio[missaoId-1].nome);
+        break;    
+     
+     default:
+        break;
+     }
 }
 
 
