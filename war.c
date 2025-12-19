@@ -39,7 +39,7 @@ void limpaBufferEntrada();
 void liberarMemoria(struct territorios **territorio);
 void cadastrarTerritorio (struct territorios *territorio );
 void listarTerritorio(struct territorios *territorio);
-void ataque(struct territorios *terriTorio);
+void ataque(struct territorios *terriTorio,int missaoId);
 void sortearMissao(struct missao *missao, int *missaoId,struct territorios *territorio);
 void verificarmissao(struct territorios *territorio, int missaoId, struct territorios *terrEstadoIni);
 
@@ -107,13 +107,19 @@ int main() {
                 break;
 
             case 3:
-                 if(contTerritorios>0){
-                     ataque(territorio);
-                     printf("\n------novo mapa com tropas atualizadas----\n");
-                     listarTerritorio(territorio);
-                     verificarmissao(territorio,missaoId,terrEstadoIni);
+                 if(contTerritorios>0 ){ 
+                        if(missaoId>0){
+                            ataque(territorio,missaoId);
+                            printf("\n------novo mapa com tropas atualizadas----\n");
+                            listarTerritorio(territorio);
+                            verificarmissao(territorio,missaoId,terrEstadoIni);
+
+                        } else {
+                            printf("!!!\nnenhuma missão sorteada!!!");
+                           }
+                     
                     } else {
-                        printf("nehum território cadastrado ainda !\n");
+                        printf("\nnenhum território cadastrado ainda !\n");
                     }
                 
                  break;
@@ -272,10 +278,14 @@ void listarTerritorio(struct territorios *territorio)
 // Realiza validações, rola os dados, compara os resultados e atualiza o número de tropas.
 // Se um território for conquistado, atualiza seu dono e move uma tropa.
 // faseDeAtaque():
-void ataque(struct territorios *terriTorio){
+void ataque(struct territorios *terriTorio,int missaoId){
     if (terriTorio == NULL || contTerritorios<2) {
     printf("--\nTerritórios não alocados nó mínimo dois territórios precisam ser cadastrados!---\n");
     return;
+
+    if(missaoId==-1){
+        printf("!!!NEHUMA MISSÃO FOI SORTEADA!!!");
+    }
     }
 
     int a,  d,  atacante,  defensor,sair;   
@@ -389,23 +399,38 @@ void verificarmissao(struct territorios *territorio, int missaoId, struct territ
      switch (missaoId)
      {
      case 1:
-        printf("missão %s verificando território",territorio[missaoId-1].nome);
+        printf("\nmissão %s : verificando território",territorio[missaoId-1].nome);
+        if(territorio[missaoId-1].tropas==0){
+            printf("\nmissão %d - derrotar exercito %s : concluida",missaoId,territorio[missaoId-1].nome);
+        }
         break;
     
     case 2:
          printf("\nmissão %s verificando território\n",territorio[missaoId-1].nome);
+         if(territorio[missaoId-1].tropas==0){
+            printf("missão %d - derrotar exercito %s : concluida",missaoId,territorio[missaoId-1].nome);
+        }
         break;
 
     case 3:
         printf("\nmissão %s verificando território\n",territorio[missaoId-1].nome);
+        if(territorio[missaoId-1].tropas==0){
+            printf("missão %d - derrotar exercito %s : concluida",missaoId,territorio[missaoId-1].nome);
+        }
         break;
     
     case 4:
          printf("\nmissão %s verificando território\n",territorio[missaoId-1].nome);
+         if(territorio[missaoId-1].tropas==0){
+            printf("missão %d - derrotar exercito %s : concluida",missaoId,territorio[missaoId-1].nome);
+        }
         break; 
         
     case 5:
          printf("\nmissão %s verificando território\n",territorio[missaoId-1].nome);
+         if(territorio[missaoId-1].tropas==0){
+            printf("missão %d - derrotar exercito %s : concluida",missaoId,territorio[missaoId-1].nome);
+        }
         break;    
      
      default:
